@@ -21,7 +21,13 @@ namespace MitchellProject
         CompositeType GetDataUsingDataContract(CompositeType composite);
 
         [OperationContract]
-        string CreateClaim(XmlDocument doc);
+        string CreateClaim(Claim claim);
+
+        [OperationContract]
+        string CreateClaimFromXML(XmlDocument doc);
+
+        [OperationContract]
+        string testSQL(int i);
 
         // TODO: Add your service operations here
     }
@@ -46,6 +52,56 @@ namespace MitchellProject
         {
             get { return stringValue; }
             set { stringValue = value; }
+        }
+    }
+
+    [DataContract]
+    public class Claim
+    {
+        string claimNumber = String.Empty;
+        string firstName = String.Empty;
+        string lastName = String.Empty;
+        string status = String.Empty;
+        string lossdate = String.Empty;
+        int adjusterId = 0;
+        public List<Vehicle> vehicles = new List<Vehicle>();
+        public LossInfo lossinfo = new LossInfo();
+
+        [DataMember]
+        public string ClaimNumber
+        {
+            get { return claimNumber; }
+            set { claimNumber = value; }
+        }
+        [DataMember]
+        public string FirstName
+        {
+            get { return firstName; }
+            set { firstName = value; }
+        }
+        [DataMember]
+        public string LastName
+        {
+            get { return lastName; }
+            set { lastName = value; }
+        }
+        [DataMember]
+        public string Status
+        {
+            get { return status; }
+            set { status = value; }
+        }
+        [DataMember]
+        public string LossDate
+        {
+            get { return lossdate; }
+            set { lossdate = value; }
+        }
+        [DataMember]
+        public int AdjusterId
+        {
+            get { return adjusterId; }
+            set { adjusterId = value; }
         }
     }
 }

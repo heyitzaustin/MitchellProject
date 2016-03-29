@@ -15,9 +15,70 @@ namespace MitchellProject
     public class Service1 : ClaimsService
     {
 
-        public string CreateClaim(XmlDocument doc)
+        public string testSQL(int i)
+        {
+            string msg = "";
+            SqlConnection con = new SqlConnection(String.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\ClaimsDB.mdf;Integrated Security=True"));
+            SqlCommand cmd = new SqlCommand("INSERT INTO TestTable(Id) VALUES(@Id)", con);
+            cmd.Parameters.AddWithValue("@Id", i);
+            con.Open();
+            try {
+                int result = cmd.ExecuteNonQuery();
+                if (result == 1)
+                {
+                    msg = "Success!";
+                }
+                else
+                {
+                    msg = "Failure";
+                }
+            }
+            catch (Exception e)
+            {
+                msg = "Exception: " + e;
+            }
+            con.Close();
+            return msg;
+        }
+        public string CreateClaimFromXML(XmlDocument doc)
         {
             return "";
+        }
+        public string CreateClaim(Claim claim)
+        {
+            string msg = "";
+            SqlConnection con = new SqlConnection(String.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\ClaimsDB.mdf;Integrated Security=True"));
+            SqlCommand cmd = new SqlCommand("INSERT INTO MitchellClaim(c_number,c_firstname,c_lastname, status, lossdate, adjusterid) VALUES(@c_number, @c_firstname, @c_lastname, @status, @lossdate, @adjusterid)", con);
+            cmd.Parameters.AddWithValue("@c_number", claim.ClaimNumber);
+            cmd.Parameters.AddWithValue("@c_firstname", claim.FirstName);
+            cmd.Parameters.AddWithValue("@c_lastname", claim.LastName);
+            cmd.Parameters.AddWithValue("@status", claim.Status);
+            cmd.Parameters.AddWithValue("@lossdate", claim.LossDate);
+            cmd.Parameters.AddWithValue("@adjusterid", claim.AdjusterId);
+            con.Open();
+
+            // Insert into Claims
+            try {
+                int result = cmd.ExecuteNonQuery();
+                if (result == 1)
+                {
+                    msg = "Success!";
+                }
+                else
+                {
+                    msg = "Failure";
+                }
+            }
+            // Insert into vehicles
+    
+
+            catch (Exception e)
+            {
+                msg = "Exception: " + e;
+            }
+            con.Close();
+            return msg;
+
         }
         public string GetData(int value)
         {
