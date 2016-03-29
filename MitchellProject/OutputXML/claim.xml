@@ -1,0 +1,28 @@
+<MitchellClaim>
+  <ClaimNumber>22c9c23bac142856018ce14a26b6c299</ClaimNumber>
+  <ClaimantFirstName>George</ClaimantFirstName>
+  <ClaimantLastName>Washington</ClaimantLastName>
+  <Status>OPEN</Status>
+  <LossDate>2014-07-09T17:19:13.631-07:00</LossDate>
+  <LossInfo>
+    <CauseOfLoss>Collision</CauseOfLoss>
+    <ReportedDate>2014-07-10T17:19:13.676-07:00</ReportedDate>
+    <LossDescription>Crashed into an apple tree.</LossDescription>
+  </LossInfo>
+  <AssignedAdjusterID>12345</AssignedAdjusterID>
+  <Vehicles>
+    <VehicleDetails>
+      <Vin>1M8GDM9AXKP042788</Vin>
+      <ModelYear>2015</ModelYear>
+      <MakeDescription>Ford</MakeDescription>
+      <ModelDescription>Mustang</ModelDescription>
+      <EngineDescription>EcoBoost</EngineDescription>
+      <ExteriorColor>Deep Impact Blue</ExteriorColor>
+      <LicPlate>NO1PRES</LicPlate>
+      <LicPlateState>VA</LicPlateState>
+      <LicPlateExpDate>2015-03-10-07:00</LicPlateExpDate>
+      <DamageDescription>Front end smashed in. Apple dents in roof.</DamageDescription>
+      <Mileage>1776</Mileage>
+    </VehicleDetails>
+  </Vehicles>
+</MitchellClaim>

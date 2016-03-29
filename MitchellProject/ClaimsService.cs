@@ -6,6 +6,7 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace MitchellProject
 {
@@ -14,46 +15,33 @@ namespace MitchellProject
     public interface ClaimsService
     {
 
-        [OperationContract]
-        string GetData(int value);
-
-        [OperationContract]
-        CompositeType GetDataUsingDataContract(CompositeType composite);
 
         [OperationContract]
         string CreateClaim(Claim claim);
 
         [OperationContract]
-        string CreateClaimFromXML(XmlDocument doc);
+        string CreateClaimFromXML(string xmlddoc);
 
+        // Testing operation
         [OperationContract]
         string testSQL(int i);
 
+        // Testing operation
+        [OperationContract]
+        string testXML();
+
+        [OperationContract]
+        string readClaim(string claimnumber);
+
+        [OperationContract]
+        string deleteClaim(string claimnumber);
         // TODO: Add your service operations here
+
+        [OperationContract]
+        string readVehicleFromClaim(string claimnumber, string vehicle_vin);
     }
 
 
-    // Use a data contract as illustrated in the sample below to add composite types to service operations.
-    [DataContract]
-    public class CompositeType
-    {
-        bool boolValue = true;
-        string stringValue = "Hello ";
-
-        [DataMember]
-        public bool BoolValue
-        {
-            get { return boolValue; }
-            set { boolValue = value; }
-        }
-
-        [DataMember]
-        public string StringValue
-        {
-            get { return stringValue; }
-            set { stringValue = value; }
-        }
-    }
 
     [DataContract]
     public class Claim
