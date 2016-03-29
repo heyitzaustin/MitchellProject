@@ -279,16 +279,6 @@ namespace MitchellProject
                                                                                             ))
                                                 )   
                                                 ));
-            /*
-
-            //TESTING
-
-            string filename = @"C:\Users\Austin Li\Documents\Visual Studio 2015\Projects\MitchellProject\MitchellProject\OutputXML\temp.xml";
-            if (!File.Exists(filename))
-            {
-                doc.Save(filename);
-            }
-            */
 
             // Return xml document as string to be parsed on client end
             return doc.ToString();
@@ -322,7 +312,6 @@ namespace MitchellProject
         }
         public string readVehicleFromClaim(string claimnumber, string vehicle_vin)
         {
-            string msg;
             SqlConnection con = new SqlConnection(String.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\ClaimsDB.mdf;Integrated Security=True"));
             SqlCommand cmd_ve = new SqlCommand("SELECT * FROM Vehicle WHERE c_number='" + claimnumber + "' AND vin='"+vehicle_vin+"'", con);
             con.Open();
@@ -365,6 +354,38 @@ namespace MitchellProject
             return doc.ToString();
         }
 
+        public List<string> getClaimsInDateRange(string startdate, string enddate)
+        {
+            DateTime start = Convert.ToDateTime(startdate);
+            DateTime end = Convert.ToDateTime(enddate);
+
+            SqlConnection con = new SqlConnection(String.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\ClaimsDB.mdf;Integrated Security=True"));
+            SqlCommand cmd = new SqlCommand("SELECT * FROM MitchellClaim", con);
+            con.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            // Read from Claims
+            List<String> validclaims = new List<string>();
+            if (reader != null)
+            {
+                if (reader.Read())
+                {
+                    string claim_time = reader["lossdate"].ToString();
+                    DateTime claimtime = Convert.ToDateTime(claim_time);
+                    if (claimtime >= start && claimtime <= end)
+                    {
+                        validclaims.Add(reader["c_number"].ToString());
+                    }
+                }
+            }
+
+            List<String> return_xml_list = new List<string>();
+            foreach( string claim in validclaims)
+            {
+                return_xml_list.Add(readClaim(claim));
+            }
+            return return_xml_list;
+          
+        }
 
     }
 

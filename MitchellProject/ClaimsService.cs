@@ -39,6 +39,9 @@ namespace MitchellProject
 
         [OperationContract]
         string readVehicleFromClaim(string claimnumber, string vehicle_vin);
+
+        [OperationContract]
+        List<string> getClaimsInDateRange(string startdate, string enddate);
     }
 
 
