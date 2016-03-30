@@ -2,11 +2,7 @@
 Project for Mitchell
 
 Tools used:
-.NET stack
-C#
-WCF
-IIS
-SQL Server Express (LocalDB)
+.NET stack, C#, WCF, IIS, SQL Server Express (LocalDB)
 
 There are two github repositories that are a part of this project. 
 
