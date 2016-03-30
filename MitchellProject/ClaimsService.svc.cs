@@ -52,12 +52,15 @@ namespace MitchellProject
 
         }
 
+        // Web Service function that takes in string representing xml and creates a claim
         public string CreateClaimFromXML(string xmldoc)
         {
+            // Load XML into XMLDoc object
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(xmldoc);
             Claim insertclaim = new Claim();
 
+            // Fill in our Claim object
             insertclaim.ClaimNumber = doc.GetElementsByTagName("cla:ClaimNumber")[0].InnerXml;
             insertclaim.FirstName = doc.GetElementsByTagName("cla:ClaimantFirstName")[0].InnerXml;
             insertclaim.LastName = doc.GetElementsByTagName("cla:ClaimantLastName")[0].InnerXml;
@@ -70,6 +73,7 @@ namespace MitchellProject
             lossinfo.description = doc.GetElementsByTagName("cla:LossDescription")[0].InnerXml;
             insertclaim.lossinfo = lossinfo;
             XmlNodeList vehicles = doc.GetElementsByTagName("cla:VehicleDetails");
+            // Fill in vehicle details
             for (int i = 0; i < vehicles.Count; i++)
             {
                 XmlNodeList details = vehicles[i].ChildNodes;
@@ -90,6 +94,7 @@ namespace MitchellProject
 
             return CreateClaim(insertclaim);
         }
+        // Take our claim object and put it into our database
         public string CreateClaim(Claim claim)
         {
             string msg = "";
@@ -189,7 +194,8 @@ namespace MitchellProject
             return msg;
 
         }
-
+        
+        // Webservice function that finds a claim  in our database by it's claim number and returns an XML string representing that claim.
         public string readClaim(string claimnumber)
         {
 
@@ -251,6 +257,7 @@ namespace MitchellProject
                     returnclaim.lossinfo = lossinfo;
                 }
             }
+            // Create our XML document
             // For some reason it won't let me use the ':' character in here.... so instead of cla:MitchellClaim I'll be using MitchellClaim as a name
             XDocument doc = new XDocument(new XElement("MitchellClaim",
                                                 new XElement("ClaimNumber", claimnumber),
@@ -283,7 +290,8 @@ namespace MitchellProject
             // Return xml document as string to be parsed on client end
             return doc.ToString();
         }
-
+        
+        // Web service function that deletes a claim in our database by claim number
         public string deleteClaim(string claimnumber)
         {
             string msg;
@@ -310,6 +318,7 @@ namespace MitchellProject
             return msg;
             
         }
+        // Web service function to return a specific vehicle from a claim as a string of XML
         public string readVehicleFromClaim(string claimnumber, string vehicle_vin)
         {
             SqlConnection con = new SqlConnection(String.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\ClaimsDB.mdf;Integrated Security=True"));
@@ -337,6 +346,7 @@ namespace MitchellProject
                 }
             }
             reader.Close();
+            // Create XML document for the vehicle
             XDocument doc = new XDocument(new XElement("VehicleDetails",
                                        new XElement("Vin", vehicle.Vin),
                                        new XElement("ModelYear", vehicle.modelYear),
@@ -353,7 +363,7 @@ namespace MitchellProject
             // Return XML of Vehicle information
             return doc.ToString();
         }
-
+        // Web service function that returns all the claims in the stated date range
         public List<string> getClaimsInDateRange(string startdate, string enddate)
         {
             DateTime start = Convert.ToDateTime(startdate);
@@ -369,20 +379,24 @@ namespace MitchellProject
             {
                 if (reader.Read())
                 {
+                    // Sort correct dates on our logic end.
                     string claim_time = reader["lossdate"].ToString();
                     DateTime claimtime = Convert.ToDateTime(claim_time);
                     if (claimtime >= start && claimtime <= end)
                     {
                         validclaims.Add(reader["c_number"].ToString());
+                        // add of list of claims that fit the criteria
                     }
                 }
             }
 
             List<String> return_xml_list = new List<string>();
-            foreach( string claim in validclaims)
+            foreach( string claim in validclaims )
             {
                 return_xml_list.Add(readClaim(claim));
+                // Grab XML for each valid claim
             }
+            // return list of claim xml's
             return return_xml_list;
           
         }
